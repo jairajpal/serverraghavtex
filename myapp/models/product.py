@@ -3,6 +3,9 @@ from django.utils import timezone
 
 
 class Product(models.Model):
+    class FormEnum(models.TextChoices):
+        RAW = 'raw', 'Raw'
+        DISPATCH = 'dispatch', 'Dispatch'
     challan_no = models.CharField(max_length=100, default="-")
     company = models.CharField(max_length=255, default="-")
     date = models.DateField()
@@ -15,7 +18,11 @@ class Product(models.Model):
     remarks = models.TextField(blank=True, null=True, default="-")
     shuttle_or_mat = models.CharField(max_length=100, default="-")
     receiving = models.CharField(max_length=100, default="-")
-
+    form_enum = models.CharField(
+        max_length=50,
+        choices=FormEnum.choices,
+        default=FormEnum.RAW,
+    )
     def __str__(self):
         return f"{self.challan_no} - {self.company}"
 

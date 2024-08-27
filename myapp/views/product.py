@@ -8,8 +8,21 @@ from ..serializers.product import ProductSerializer
 import csv
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all().order_by('-date')  # Order by 'date' in descending order
+    queryset = Product.objects.all().order_by('-date')  # Ensure this is properly defined
     serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()  # Start with the base queryset
+
+        form_enum = self.request.query_params.get('form_enum', None)
+        print('form_enum: ', form_enum)
+        if form_enum:
+            if form_enum == 'raw':
+                queryset = queryset.filter(form_enum='raw')  # Adjust as needed
+            elif form_enum == 'dispatch':
+                queryset = queryset.filter(form_enum='dispatch')  # Adjust as needed
+
+        return queryset
 
 class ProductUploadView(APIView):
     parser_classes = [MultiPartParser, FormParser]

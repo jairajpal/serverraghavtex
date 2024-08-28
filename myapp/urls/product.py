@@ -8,6 +8,6 @@ router = DefaultRouter()
 router.register(r'products', ProductViewSet)
 
 urlpatterns = [
+    path('products/upload/', ProductUploadView.as_view(), name='product-upload'),
     path('', include(router.urls), name='product'),  # This should work as expected
-    path('upload/', ProductUploadView.as_view(), name='product-upload'),
 ]
